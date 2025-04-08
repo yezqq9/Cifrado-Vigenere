@@ -1,0 +1,116 @@
+import java.util.Scanner;
+public class Vignere {
+
+    int[] clave;
+    char[][] alfabeto = new char[64][64];
+    String rango = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+    /*
+    public Vignere(String UsuarioClave) {
+        Vigenere(UsuarioClave);
+        Matriz();
+    }*/
+    public Vignere() { // se usa pero esta desactivado para usar el benchmarck
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Ingrese clave para el encriptado: ");
+        String UsuaClave= sc.nextLine();
+        Vigenere(UsuaClave);
+        Matriz();
+    }
+    public void Matriz() {
+        for (int i = 0; i < 64; i++) {
+            for (int j = 0; j < 64; j++) {
+                int posicion = (i + j) % 64;//permite repetir el rango dado entre 0 a 63 par volver a la posicion 0
+                alfabeto[i][j] = rango.charAt(posicion);
+            }
+        }
+    }
+    public void Vigenere(String UsuarioClave) {
+        clave = new int[UsuarioClave.length()];
+        for (int i = 0; i < UsuarioClave.length(); i++) {
+            char c = UsuarioClave.charAt(i);
+            int valor = rango.indexOf(c); //posicion del caracter dado en el rango establecido
+            clave[i] = valor; //guarda el valor numerico en un arreglo
+        }
+    }
+
+    public String Encriptar(String mensaje) {
+        String mensajeCifrado = "";
+        for (int i = 0; i < mensaje.length(); i++) {
+            char letra = mensaje.charAt(i);
+            int fila = rango.indexOf(letra);
+            if (fila == -1) {
+                mensajeCifrado += letra;
+                continue;
+            }
+            int columna = clave[i % clave.length];
+
+            mensajeCifrado += alfabeto[fila][columna];
+        }
+        return mensajeCifrado;
+    }
+
+    public String Desencriptar(String mensajeADecifrar) {
+        String mensajeDecifrado = "";
+        for (int i = 0; i < mensajeADecifrar.length(); i++) {
+            int columna = clave[i % clave.length];
+            char letracifrada = mensajeADecifrar.charAt(i);
+
+            int filaoriginal = -1;
+            for(int j = 0; j < 64; j++){
+                if(alfabeto[j][columna] == letracifrada){
+                    filaoriginal = j;
+                    break;
+                }
+            }
+            if(filaoriginal == -1){
+                mensajeDecifrado += letracifrada;
+            }else{
+                mensajeDecifrado += rango.charAt(filaoriginal);
+            }
+        }
+        return mensajeDecifrado;
+    }
+
+    public char search(int position) {
+        if(position < 4096 && position >= 0) {
+            int contador = 0;
+            for (int i = 0; i < 64; i++) {
+                for (int j = 0; j < 64; j++) {
+                    if (contador == position) {
+                        return alfabeto[i][j];
+                    }
+                    contador++;
+                }
+            }
+        }
+            System.out.println("Caracter no encontrado");
+            return '!';
+    }
+
+    public char OptimalSearch(int position) { //
+        if (position >= 0 && position < 4096) {
+            int fila = position / 64;     // División entera para saber en qué fila cae
+            int columna = position % 64;  // Módulo para saber en qué columna dentro de esa fila
+
+            return alfabeto[fila][columna];// Coordenada exacta
+        }
+        System.out.println("Caracter no encontrado");
+        return '!';// En caso de no encontrar el valor pedido
+    }
+
+    public void reEncrypt() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Ingrese el mensaje encriptado: ");
+        String mensajeEncriptado = sc.nextLine();
+        String mensajeOriginal = Desencriptar(mensajeEncriptado);
+        //System.out.println("El mensaje original es: " + mensajeOriginal);//solo para prueba
+        System.out.print("Ingrese la nueva clave por favor: ");
+        String nuevaClave = sc.nextLine();
+        Vigenere(nuevaClave);//esta linea convierte la clave en arreglo
+        String mensajeReCifrado = Encriptar(mensajeOriginal);
+        System.out.println("El mensaje reencriptado es : " + mensajeReCifrado);
+        //String prueba = Desencriptar(mensajeReCifrado);
+        //System.out.println("a : " + prueba);
+    }
+
+}
