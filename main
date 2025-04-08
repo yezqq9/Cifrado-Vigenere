@@ -2,9 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        /*
-        Benchmark.main(args);// usado para graficar
-        */
+       
         Vignere cifrador = new Vignere();
         Scanner sc = new Scanner(System.in);
 
