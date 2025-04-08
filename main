@@ -1,0 +1,23 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        /*
+        Benchmark.main(args);// usado para graficar
+        */
+        Vignere cifrador = new Vignere();
+        Scanner sc = new Scanner(System.in);
+
+        String mensajeCifrado = cifrador.Encriptar("GualianoChorizo");
+            System.out.println("Mensaje cifrado: " + mensajeCifrado);
+        String mensajeDecifrado = cifrador.Desencriptar(mensajeCifrado);
+            System.out.println("Mensaje Decifrado: " + mensajeDecifrado);
+        cifrador.reEncrypt();
+        System.out.println("Indique la posicion del caracter a buscar: ");
+        int pos = sc.nextInt();
+        System.out.println("Resultado de search(): " + cifrador.search(pos));
+        System.out.println("Resultado de OptimalSearch(): " + cifrador.OptimalSearch(pos));
+
+
+    }
+}
