@@ -3,9 +3,7 @@ Laboratorio 1
 
 Autores:
 
-Guliano Bardi
-Francisco Olmos
-Gianfranco Caleni
+Guliano Bardi, Francisco Olmos y Gianfranco Caleni,
 
 
 Profesor:
