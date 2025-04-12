@@ -1,0 +1,49 @@
+import java.util.Random;
+
+public class Benchmark {
+    public static void main(String[] args) {
+
+        String mensaje = generarMensaje(10000 );
+        int[] longitudesClave = {10, 50, 100, 500, 1000, 5000};
+        System.out.println("RESULTADOS DE EXPERIMENTO");
+        for (int i = 0; i < longitudesClave.length; i++) {
+            int longitud = longitudesClave[i];
+            String clave = generarClaveAleatoria(longitud);
+            Vignere cifrador = new Vignere(clave); // dara error pero debe cambiar el constructor que esta en comillas en Vigneres
+            // Medir tiempo de encriptación
+            long startEnc = System.nanoTime();
+            String mensajeCifrado = cifrador.Encriptar(mensaje);
+            long endEnc = System.nanoTime();
+
+            long startDec = System.nanoTime();
+            String mensajeDecifrado = cifrador.Desencriptar(mensajeCifrado);
+            long endDec = System.nanoTime();
+
+            double tiempoEncMs = (endEnc - startEnc) / 1_000_000.0;
+            double tiempoDecMs = (endDec - startDec) / 1_000_000.0;
+
+            System.out.printf("Clave: %5d caracteres | Encriptar: %8.3f ms | Desencriptar: %8.3f ms\n",
+                    longitud, tiempoEncMs, tiempoDecMs);
+        }
+    }
+    public static String generarMensaje(int longitud) {
+        StringBuilder mensaje = new StringBuilder();
+        String rango = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+        Random rand = new Random();
+
+        for (int i = 0; i < longitud; i++) {
+            mensaje.append(rango.charAt(rand.nextInt(rango.length())));
+        }
+        return mensaje.toString();
+    }
+    public static String generarClaveAleatoria(int longitud) {
+        StringBuilder clave = new StringBuilder();
+        String rango = "abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890";
+        Random rand = new Random();
+
+        for (int i = 0; i < longitud; i++) {
+            clave.append(rango.charAt(rand.nextInt(rango.length())));
+        }
+        return clave.toString();
+    }
+}
